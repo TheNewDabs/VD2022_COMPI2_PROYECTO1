@@ -1,0 +1,138 @@
+fn main() {
+    1+1+2*(2+3)-2+5/(1+1)+5%2==13 && false || !false;
+    (5+3)..(2+2);
+    "".to_owned()
+}
+
+fn main() {
+    let p:[i64;3] = [1,2,3];
+    p[0] = 5;
+    print!("{:?}", x);
+}
+
+[i64;2]
+
+fn main() {
+    let a: i64 = 2;
+    let b: i64 = a+6;
+    let mut c: f64 = 1.0*3.0;
+    let d = x(1,2,3) + 1;
+    let x: i64 = 12;
+    let I: &str = "0";
+    let U: String = " 1".to_owned() + I;
+    println!(" {}", U);
+    c = 7.0;
+    DuplicarMax1000(1);
+    match c{
+        1.0 | 2.0 => {
+                    print!(" Match ");
+                    let a = 1.0;
+                    println!("{}",a);
+                     },
+        3.0 | 4.0 => {
+                    print!(" Match ");
+                    let a = 1.0+1.0;
+                    println!("{}",a);
+                     },
+        5.0 | 6.0 => {
+                    print!(" Match ");
+                    let a = 1.0+1.0+1.0;
+                    println!("{}",a);
+                     },
+        _ => print!(" Match {}", 1.0+1.0+1.0+1.0),
+    };
+    let l = match c{
+        1.0 | 2.0 => {
+                    1
+                     },
+        3.0 | 4.0 => {
+                    2
+                     },
+        5.0 | 6.0 => {
+                    3
+                     },
+        _ => 4,
+    };
+    let m = true;
+    match m{
+        true => {
+                    print!(" Match ");
+                    let a = 1.0;
+                    println!("{}",a);
+                     },
+        false => {
+                    print!(" Match ");
+                    let a = 1.0+1.0;
+                    println!("{}",a);
+                     },
+    };
+    let mut cont = 0;
+    let k = loop{
+        cont = cont + 1;
+        if cont == 10{
+            continue;
+        };
+        if cont == 10 || cont == 15{
+            break 1;
+        };
+    };
+    print!("{}",cont + k);
+    let mut cont2 = 0;
+    let mut cont3 = 0;
+    while(cont2 < 10 && cont3 < 5){
+        if cont2 == 2{
+            cont2 = cont2 + 1;
+            continue;
+        };
+        let mut cont3 = 0;
+        print!("\nwhile {}", cont2);
+        cont2 = cont2 + 1;
+        cont3 = cont3 + 1;
+        if cont2 == 7{
+            break;
+        };
+    };
+    for i in 1..10{
+        if i == 2{
+            continue;
+        };
+        if i == 9{
+            break;
+        };
+        print!("\nFor {}",i);
+    };
+    let p:[[i64;3];3] = [[1,2,3],[1,2,3],[1,2,3]];
+    p[0][0] = 5;
+    print!("{:?}", p);
+}
+
+fn x(a:i64,b:i64,c:i64) -> i64{
+    let z: i64 = a+1;
+    let mut n: f64 = 1.0;
+    let h = if false{
+        print!("{} ",n);
+        n = n + 1.0;
+        print!("{} ",n);
+        n = n + 1.0;
+        print!("{} ",n);
+    }else if false{
+        print!("{} ",n);
+        n = n + 1.0;
+        print!("{} ",n);
+    }else{
+        print!("{} ",n);
+    };
+    print!("hola");
+    return 5+5+5;
+    print!("adios");
+}
+
+fn DuplicarMax1000(Back:i64) -> i64{
+    println!("{}", Back);
+    if Back >= 1000{
+        print!("\n");
+        return Back;
+    }else{
+        return DuplicarMax1000(Back*2);
+    };
+}
