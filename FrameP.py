@@ -1,6 +1,10 @@
 from tkinter import * 
 from tkinter import messagebox
 from tkinter import ttk
+from grammar import grammar
+
+
+
 
 class Interfaz():
 
@@ -130,6 +134,8 @@ class Interfaz():
         self.Modo = not self.Modo
 
     def Ejecutar(self):
+        messagebox.showinfo(message = 'Funciona', title = 'Información')
+
         #self.cuadroConsola.configure(state='normal')
         #self.cuadroConsola.insert(END, f"----------------------------\n")
         #self.cuadroConsola.configure(state='disabled')
