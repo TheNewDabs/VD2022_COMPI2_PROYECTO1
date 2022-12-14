@@ -47,7 +47,11 @@ reservadas = {
     "bool": "BOOL",
     "string": "STRING",
     "list": "ARRAY",
+<<<<<<< HEAD
+    "struct": "STRUCT",
+=======
     "Struct": "STRUCT",
+>>>>>>> 6182972ada2c70abcaee98a210e28744bfd25302
     "or": "OR",
     "and": "AND",
     "not": "NOT",
@@ -551,12 +555,21 @@ def p_statement(t):
 
 
 def p_declare_function(t):
+<<<<<<< HEAD
+    '''declare_function     : FUNCTION ID PARIZQ dec_params PARDER DOSP newline statement END
+                            | FUNCTION ID PARIZQ PARDER DOSP newline statement END'''
+    if len(t) == 10:
+        t[0] = Function(t[2], t[4], Type.NULL, t[8], t.lineno(1), t.lexpos(0))
+    else:
+        t[0] = Function(t[2], [], Type.NULL, t[7], t.lineno(1), t.lexpos(0))
+=======
     '''declare_function     : FUNCTION ID PARIZQ dec_params PARDER statement newline
                             | FUNCTION ID PARIZQ PARDER statement newline'''
     if len(t) == 8:
         t[0] = Function(t[2], t[4], Type.NULL, t[6], t.lineno(1), t.lexpos(0))
     elif len(t) == 7:
         t[0] = Function(t[2], [], Type.NULL, t[5], t.lineno(1), t.lexpos(0))
+>>>>>>> 6182972ada2c70abcaee98a210e28744bfd25302
 
 
 def p_dec_params(t):
@@ -587,6 +600,43 @@ def p_dec_params(t):
 
 
 def p_if_state(t):
+<<<<<<< HEAD
+    '''if_state     : IF expression DOSP newline statement END
+                    | IF expression DOSP newline statement ELSE DOSP newline statement END
+                    | IF expression DOSP newline statement else_if_list END'''
+    if len(t) == 7:
+        t[0] = If(t[2], t[5], t.lineno(1), t.lexpos(0))
+    elif len(t) == 11:
+        t[0] = If(t[2], t[5], t.lineno(1), t.lexpos(0), t[9])
+    elif len(t) == 8:
+        t[0] = If(t[2], t[5], t.lineno(1), t.lexpos(0), t[6])
+
+
+def p_else_if_list(t):
+    '''else_if_list     : ELSEIF expression DOSP newline statement
+                        | ELSEIF expression DOSP newline statement ELSE DOSP newline statement
+                        | ELSEIF expression DOSP newline statement else_if_list'''
+    if len(t) == 6:
+        t[0] = If(t[2], t[5], t.lineno(1), t.lexpos(0))
+    elif len(t) == 10:
+        t[0] = If(t[2], t[5], t.lineno(1), t.lexpos(0), t[9])
+    elif len(t) == 7:
+        t[0] = If(t[2], t[5], t.lineno(1), t.lexpos(0), t[6])
+
+
+def p_while_state(t):
+    '''while_state      : WHILE expression DOSP newline statement END'''
+    t[0] = While(t[2], t[5], t.lineno(1), t.lexpos(0))
+
+
+def p_for_state(t):
+    '''for_state        : FOR ID IN expression DOSP expression DOSP newline statement END
+                        | FOR ID IN expression DOSP newline statement END'''
+    if len(t) == 11:
+        t[0] = For(t[2], t[4], t[9], t.lineno(1), t.lexpos(0), t[6])
+    else:
+        t[0] = For(t[2], t[4], t[7], t.lineno(1), t.lexpos(0))
+=======
     '''if_state     : IF expression statement END
                     | IF expression statement ELSE statement END
                     | IF expression statement else_if_list END'''
@@ -622,6 +672,7 @@ def p_for_state(t):
         t[0] = For(t[2], t[4], t[7], t.lineno(1), t.lexpos(0), t[6])
     else:
         t[0] = For(t[2], t[4], t[5], t.lineno(1), t.lexpos(0))
+>>>>>>> 6182972ada2c70abcaee98a210e28744bfd25302
 
 
 def p_break(t):
@@ -644,6 +695,19 @@ def p_return(t):
 
 
 def p_createStruct(t):
+<<<<<<< HEAD
+    'create_struct : STRUCT ID DOSP newline attList END'
+    t[0] = CreateStruct(t[2], t[5], t.lineno(1), t.lexpos(0))
+
+
+def p_attList(t):
+    '''attList :  attList ID DOSP tipo PTCOMA newline
+                | ID DOSP tipo PTCOMA newline'''
+    if len(t) == 6:
+        t[0] = [StructAttribute(t[1], t[3], t.lineno(1), t.lexpos(0))]
+    else:
+        t[1].append(StructAttribute(t[2], t[4], t.lineno(1), t.lexpos(0)))
+=======
     'create_struct : STRUCT ID attList END'
     t[0] = CreateStruct(t[2], t[3], t.lineno(1), t.lexpos(0))
 
@@ -655,6 +719,7 @@ def p_attList(t):
         t[0] = [StructAttribute(t[1], t[4], t.lineno(1), t.lexpos(0))]
     else:
         t[1].append(StructAttribute(t[2], t[5], t.lineno(1), t.lexpos(0)))
+>>>>>>> 6182972ada2c70abcaee98a210e28744bfd25302
         t[0] = t[1]
 
 
