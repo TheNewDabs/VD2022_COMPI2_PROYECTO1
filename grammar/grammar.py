@@ -40,6 +40,9 @@ from expressions.Literal import *
 from expressions.Logical import *
 from expressions.Relational import *
 
+from ReporteTS.ReporteTS import ReporteTS
+reporteTS = []
+
 reservadas = {
     "None": "NOTHING",
     "int": "INT",
@@ -412,50 +415,69 @@ def p_nativas(t):
                         | POP PARIZQ expression PARDER
                         '''
     if t.slice[1].type == "LOG":
+        reporteTS.append(ReporteTS("Log", "Funcion nativa", "Local", t.lineno(1), t.lexpos(0)))
         pass
     elif t.slice[1].type == "LOG10":
+        reporteTS.append(ReporteTS("Log10", "Funcion nativa", "Local", t.lineno(1), t.lexpos(0)))
         pass
     elif t.slice[1].type == "COS":
+        reporteTS.append(ReporteTS("Cos", "Funcion nativa", "Local", t.lineno(1), t.lexpos(0)))
         pass
     elif t.slice[1].type == "SIN":
+        reporteTS.append(ReporteTS("Sin", "Funcion nativa", "Local", t.lineno(1), t.lexpos(0)))
         pass
     elif t.slice[1].type == "TAN":
+        reporteTS.append(ReporteTS("Tan", "Funcion nativa", "Local", t.lineno(1), t.lexpos(0)))
         pass
     elif t.slice[1].type == "SQRT":
+        reporteTS.append(ReporteTS("Sqrt", "Funcion nativa", "Local", t.lineno(1), t.lexpos(0)))
         pass
     elif t.slice[1].type == "UPPERCASE":
         t[0] = ToUpper(t[3], t.lineno(1), t.lexpos(0))
+        reporteTS.append(ReporteTS("Uppercase", "Funcion nativa", "Local", t.lineno(1), t.lexpos(0)))
     elif t.slice[1].type == "LOWERCASE":
         t[0] = ToLower(t[3], t.lineno(1), t.lexpos(0))
+        reporteTS.append(ReporteTS("Lowercase", "Funcion nativa", "Local", t.lineno(1), t.lexpos(0)))
     elif t.slice[1].type == "TOSTRING":
+        reporteTS.append(ReporteTS("To string", "Funcion nativa", "Local", t.lineno(1), t.lexpos(0)))
         pass
     elif t.slice[1].type == "TOFLOAT":
+        reporteTS.append(ReporteTS("To float", "Funcion nativa", "Local", t.lineno(1), t.lexpos(0)))
         pass
     elif t.slice[1].type == "TRUNC":
         if len(t) == 5:
             t[0] = Trunc(t.lineno(1), t.lexpos(0), t[3])
+            reporteTS.append(ReporteTS("Trunc", "Funcion nativa", "Local", t.lineno(1), t.lexpos(0)))
         else:
             t[0] = Trunc(t.lineno(1), t.lexpos(0), t[5])
+            reporteTS.append(ReporteTS("Trunc", "Funcion nativa", "Local", t.lineno(1), t.lexpos(0)))
     elif t.slice[1].type == "TYPEOF":
+        reporteTS.append(ReporteTS("Type of", "Funcion nativa", "Local", t.lineno(1), t.lexpos(0)))
         pass
     elif t.slice[1].type == "PARSE":
+        reporteTS.append(ReporteTS("Parse", "Funcion nativa", "Local", t.lineno(1), t.lexpos(0)))
         pass
     elif t.slice[1].type == "LENGTH":
         t[0] = Length(t.lineno(1), t.lexpos(0), t[3])
+        reporteTS.append(ReporteTS("Length", "Funcion nativa", "Local", t.lineno(1), t.lexpos(0)))
     elif t.slice[1].type == "PUSH":
+        reporteTS.append(ReporteTS("Push", "Funcion nativa", "Local", t.lineno(1), t.lexpos(0)))
         pass
     elif t.slice[1].type == "POP":
+        reporteTS.append(ReporteTS("Pop", "Funcion nativa", "Local", t.lineno(1), t.lexpos(0)))
         pass
 
 
 def p_print_instr(t):
     'print_instr    : PRINT PARIZQ exp_list PARDER'
     t[0] = Print(t[3], t.lineno(1), t.lexpos(0), False)
+    reporteTS.append(ReporteTS("Print", "Sentencia", "Local", t.lineno(1), t.lexpos(0)))
 
 
 def p_println_instr(t):
     'println_instr  : PRINTLN PARIZQ exp_list PARDER'
     t[0] = Print(t[3], t.lineno(1), t.lexpos(0), True)
+    reporteTS.append(ReporteTS("Print", "Sentencia", "Local", t.lineno(1), t.lexpos(0)))
 
 
 def p_tipo(t):
@@ -487,6 +509,7 @@ def p_definicion_instr(t):
     '''definicion_instr   :  LOCAL ID'''
     if t.slice[1].type == "LOCAL":
         t[0] = Declaration(t[2], 0, t.lineno(1), t.lexpos(0))
+        reporteTS.append(ReporteTS(t[2], "Declaracion variable", "Global", t.lineno(1), t.lexpos(0)))
 
 
 def p_asignacion_instr(t):
@@ -494,9 +517,11 @@ def p_asignacion_instr(t):
                             | LOCAL ID IGUAL expression'''
     if len(t) == 4:
         t[0] = Declaration(t[1], t[3], t.lineno(1), t.lexpos(0))
+        reporteTS.append(ReporteTS(t[1], "Asignacion variable", "Global", t.lineno(1), t.lexpos(0)))
     else:
         if t.slice[1].type == "LOCAL":
             t[0] = Declaration(t[2], t[4], t.lineno(1), t.lexpos(0))
+            reporteTS.append(ReporteTS(t[1], "Asignacion variable", "Local", t.lineno(1), t.lexpos(0)))
 
 
 def p_definicion_asignacion_instr(t):
@@ -504,14 +529,17 @@ def p_definicion_asignacion_instr(t):
                                     | LOCAL ID IGUAL expression DOSP tipo'''
     if len(t) == 6:
         t[0] = Declaration(t[1], t[3], t.lineno(1), t.lexpos(0))
+        reporteTS.append(ReporteTS(t[1], "Declaracion variable", "Global", t.lineno(1), t.lexpos(0)))
     else:
         if t.slice[1].type == "LOCAL":
             t[0] = Declaration(t[2], t[4], t.lineno(1), t.lexpos(0))
+        reporteTS.append(ReporteTS(t[2], "Declaracion variable", "Local", t.lineno(1), t.lexpos(0)))
 
 
 def p_asignacion_arreglo_instr(t):
     '''asignacion_arreglo_instr     : ID index_list IGUAL expression'''
     t[0] = ChangeArray(t[1], t[2], t[4], t.lineno(1), t.lexpos(0))
+    reporteTS.append(ReporteTS(t[1], "Arreglo", "Global", t.lineno(1), t.lexpos(0)))
 
 
 # todo tengo que hacer que se asignar y declarar los arreglos con index
@@ -555,8 +583,10 @@ def p_declare_function(t):
                             | FUNCTION ID PARIZQ PARDER DOSP newline statement END'''
     if len(t) == 10:
         t[0] = Function(t[2], t[4], Type.NULL, t[8], t.lineno(1), t.lexpos(0))
+        reporteTS.append(ReporteTS(t[2], "Funcion", "Global", t.lineno(1), t.lexpos(0)))
     else:
         t[0] = Function(t[2], [], Type.NULL, t[7], t.lineno(1), t.lexpos(0))
+        reporteTS.append(ReporteTS(t[2], "Funcion", "Global", t.lineno(1), t.lexpos(0)))
 
 
 def p_dec_params(t):
@@ -592,10 +622,13 @@ def p_if_state(t):
                     | IF expression DOSP newline statement else_if_list END'''
     if len(t) == 7:
         t[0] = If(t[2], t[5], t.lineno(1), t.lexpos(0))
+        reporteTS.append(ReporteTS("If", "Sentencia", "Local", t.lineno(1), t.lexpos(0)))
     elif len(t) == 11:
         t[0] = If(t[2], t[5], t.lineno(1), t.lexpos(0), t[9])
+        reporteTS.append(ReporteTS("If", "Sentencia", "Local", t.lineno(1), t.lexpos(0)))
     elif len(t) == 8:
         t[0] = If(t[2], t[5], t.lineno(1), t.lexpos(0), t[6])
+        reporteTS.append(ReporteTS("If", "Sentencia", "Local", t.lineno(1), t.lexpos(0)))
 
 
 def p_else_if_list(t):
@@ -613,6 +646,7 @@ def p_else_if_list(t):
 def p_while_state(t):
     '''while_state      : WHILE expression DOSP newline statement END'''
     t[0] = While(t[2], t[5], t.lineno(1), t.lexpos(0))
+    reporteTS.append(ReporteTS("While", "Sentencia", "Local", t.lineno(1), t.lexpos(0)))
 
 
 def p_for_state(t):
@@ -620,18 +654,22 @@ def p_for_state(t):
                         | FOR ID IN expression DOSP newline statement END'''
     if len(t) == 11:
         t[0] = For(t[2], t[4], t[9], t.lineno(1), t.lexpos(0), t[6])
+        reporteTS.append(ReporteTS("For", "Sentencia", "Local", t.lineno(1), t.lexpos(0)))
     else:
         t[0] = For(t[2], t[4], t[7], t.lineno(1), t.lexpos(0))
+        reporteTS.append(ReporteTS("For", "Sentencia", "Local", t.lineno(1), t.lexpos(0)))
 
 
 def p_break(t):
     '''break_state      : BREAK'''
     t[0] = Break(t.lineno(1), t.lexpos(0))
+    reporteTS.append(ReporteTS("Break", "Sentencia", "Local", t.lineno(1), t.lexpos(0)))
 
 
 def p_continue(t):
     '''continue_state      : CONTINUE'''
     t[0] = Continue(t.lineno(1), t.lexpos(0))
+    reporteTS.append(ReporteTS("Continue", "Sentencia", "Local", t.lineno(1), t.lexpos(0)))
 
 
 def p_return(t):
@@ -639,13 +677,16 @@ def p_return(t):
                         | RETURN expression'''
     if len(t) == 2:
         t[0] = ReturnSt(None, t.lineno(1), t.lexpos(0))
+        reporteTS.append(ReporteTS("Return", "Sentencia", "Local", t.lineno(1), t.lexpos(0)))
     else:
         t[0] = ReturnSt(t[2], t.lineno(1), t.lexpos(0))
+        reporteTS.append(ReporteTS("Return", "Sentencia", "Local", t.lineno(1), t.lexpos(0)))
 
 
 def p_createStruct(t):
     'create_struct : STRUCT ID DOSP newline attList END'
     t[0] = CreateStruct(t[2], t[5], t.lineno(1), t.lexpos(0))
+    reporteTS.append(ReporteTS(t[2], "Struct", "Global", t.lineno(1), t.lexpos(0)))
 
 
 def p_attList(t):
@@ -661,6 +702,7 @@ def p_attList(t):
 def p_declareStruct(t):
     'declare_struct : ID DOSP DOSP ID'
     t[0] = DeclareStruct(t[1], t[4], t.lineno(1), t.lexpos(0))
+    reporteTS.append(ReporteTS(t[1], "Struct", "Global", t.lineno(1), t.lexpos(0)))
 
 
 def p_assignAccess(t):
@@ -685,10 +727,10 @@ def p_error(t):
 
 parser = yacc.yacc()
 
+def getreporteTS():
+    return reporteTS
 
 def parse(input):
-    # f = open(
-    #     "/home/juanpa/Documents/Compi/OLC2_Proyecto1/compiler/grammar/pruebas.jl", "r")
-    # input = f.read()
-    # todo esto lo tengo que cambiar para jalarlo en el endpoint
+    global reporteTS
+    reporteTS = []
     return parser.parse(input, lexer=lexer)

@@ -9,6 +9,10 @@ from sym.Generator import *
 
 import sys
 
+
+from ReporteTS.ReporteTS import ReporteTS
+MisSimbolosTS = []
+
 class Interfaz():
 
     def __init__(self, *args, **kwargs):
@@ -22,7 +26,7 @@ class Interfaz():
         self.menubar.add_command(label="Modo Claro", command=self.CambiarModo)
         self.menubar.add_command(label="Ejecutar", command=self.Ejecutar)
         self.menuReportes = Menu(self.menubar)
-        self.menuReportes.add_command(label="Tabla de símbolos", command=self.GenerarReporteSimbolos)
+        self.menuReportes.add_command(label="Tabla de símbolos", command=self.genera_tabla_simbolos)
         self.menuReportes.add_command(label="Tabla de errores", command=self.GenerarReporteErrores)
         self.menuReportes.add_command(label="Tabla de bases de datos existentes", command=self.donothing)
         self.menuReportes.add_command(label="Tabla de base de datos", command=self.donothing)
@@ -152,6 +156,13 @@ class Interfaz():
             self.cuadroConsola.delete('1.0','end')
             self.cuadroConsola.insert(END, C3D)
             self.cuadroConsola.configure(state='disabled')
+            
+            
+            listaTS = grammar.getreporteTS()
+            for ts_ in listaTS:
+                c:ReporteTS = ts_
+                MisSimbolosTS.append(c.toString())
+
             self.redrawC()
         except Exception as e:
             print("no se puede compilar", e)
@@ -196,132 +207,165 @@ class Interfaz():
         #Gramatica.ListErrores = []
         """"""
 
-    def TextoSimbolos(self, Principal):
-        self.ReporteSimbolos = """<!DOCTYPE html>
-<html lang="es">
 
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-    <title>Tabla de Errores</title>
-    <style>
-        h1 {
-            font-size: 30px;
-            color: #fff;
-            text-transform: uppercase;
-            font-weight: 300;
-            text-align: center;
-            margin-bottom: 15px;
-        }
 
-        table {
-            width: 100%;
-            table-layout: fixed;
-        }
+    def genera_tabla_simbolos(self):
+        textoSim = """<table class="container"><tbody>"""
+        for i in range(len(MisSimbolosTS)):
+            textoSim += """<tr><td>"""
+            textoSim += MisSimbolosTS[i] 
+            textoSim += """</td></tr> <br></br>"""
 
-        .tbl-header {
-            background-color: rgba(255, 255, 255, 0.3);
-        }
+        textoSim += """</tbody></table>"""
 
-        .tbl-content {
-            height: 200px;
-            overflow-x: auto;
-            margin-top: 0px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
+        archivo = open("Tabla_Simbolos.html", "w")
+        #texto = "\"mis perritos estan durmiendo\""
+        
 
-        th {
-            padding: 20px 15px;
-            text-align: left;
-            font-weight: 500;
-            font-size: 12px;
-            color: #fff;
-            text-transform: uppercase;
-        }
+        texto2 = """<!DOCTYPE html>
+                        <html lang="es">
 
-        td {
-            padding: 15px;
-            text-align: left;
-            vertical-align: middle;
-            font-weight: 300;
-            font-size: 12px;
-            color: #fff;
-            border-bottom: solid 1px rgba(255, 255, 255, 0.1);
-        }
+                        <head>
+                            <meta charset="utf-8" />
+                            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                            <meta name="viewport" content="width=device-width, initial-scale=1" />
+                            <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+                            <title>Tabla de Simbolos</title>
+                            <style>
+                                @charset "UTF-8";
+                                @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
 
-        /* demo styles */
-        @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,300,700);
+                                body {
+                                    font-family: 'Open Sans', sans-serif;
+                                    font-weight: 300;
+                                    line-height: 1.42em;
+                                    color: #A7A1AE;
+                                    background-color: #02B2B5;
+                                }
 
-        body {
-            background: -webkit-linear-gradient(left, #25c481, #25b7c4);
-            background: linear-gradient(to right, #25c481, #25b7c4);
-            font-family: 'Roboto', sans-serif;
-        }
+                                h1 {
+                                    font-size: 3em;
+                                    font-weight: 300;
+                                    line-height: 1em;
+                                    text-align: center;
+                                    color: #000000;
+                                }
 
-        section {
-            margin-top: 50px;
-            margin-bottom: 50px;
-            margin-left: 200px;
-            margin-right: 200px;
-        }
+                                h2 {
+                                    font-size: 1em;
+                                    font-weight: 300;
+                                    text-align: center;
+                                    display: block;
+                                    line-height: 1em;
+                                    padding-bottom: 2em;
+                                    color: #FB667A;
+                                }
 
-        /* follow me template */
-        .made-with-love {
-            margin-top: 40px;
-            padding: 10px;
-            clear: left;
-            text-align: center;
-            font-size: 10px;
-            font-family: arial;
-            color: #fff;
-        }
+                                h2 a {
+                                    font-weight: 700;
+                                    text-transform: uppercase;
+                                    color: #FB667A;
+                                    text-decoration: none;
+                                }
 
-        .made-with-love i {
-            font-style: normal;
-            color: #F50057;
-            font-size: 14px;
-            position: relative;
-            top: 2px;
-        }
+                                .blue {
+                                    color: #185875;
+                                }
 
-        .made-with-love a {
-            color: #fff;
-            text-decoration: none;
-        }
+                                .yellow {
+                                    color: #FFF842;
+                                }
 
-        .made-with-love a:hover {
-            text-decoration: underline;
-        }
+                                .container th h1 {
+                                    font-weight: bold;
+                                    font-size: 1em;
+                                    text-align: left;
+                                    color: #185875;
+                                }
 
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
+                                .container td {
+                                    font-weight: normal;
+                                    font-size: 1em;
+                                    -webkit-box-shadow: 0 2px 2px -2px #0E1119;
+                                    -moz-box-shadow: 0 2px 2px -2px #0E1119;
+                                    box-shadow: 0 2px 2px -2px #0E1119;
+                                }
 
-        ::-webkit-scrollbar-track {
-            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-        }
+                                .container {
+                                    text-align: left;
+                                    overflow: hidden;
+                                    width: 80%;
+                                    margin: 0 auto;
+                                    display: table;
+                                    padding: 0 0 8em 0;
+                                }
 
-        ::-webkit-scrollbar-thumb {
-            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-        }
-    </style>
-    <script type="text/javascript">
-        $(window).on("load resize ", function () {
-            var scrollWidth = $('.tbl-content').width() - $('.tbl-content table').width();
-            $('.tbl-header').css({ 'padding-right': scrollWidth });
-        }).resize();
-    </script>
-</head>
+                                .container td,
+                                .container th {
+                                    padding-bottom: 2%;
+                                    padding-top: 2%;
+                                    padding-left: 2%;
+                                }
 
-<body>
-    <section>"""
-        self.ReporteSimbolos += Principal.ReporteSimbolos()
-        self.ReporteSimbolos += """</body>
-    </section>
-</html>
-"""
+                                /* Background-color of the odd rows */
+                                .container tr:nth-child(odd) {
+                                    background-color: #ffffff;
+                                }
+
+                                /* Background-color of the even rows */
+                                .container tr:nth-child(even) {
+                                    background-color: #2AA1B4;
+                                }
+
+                                .container th {
+                                    background-color: #1F2739;
+                                }
+
+                                .container td:first-child {
+                                    color: #000000;
+                                }
+
+                                .container tr:hover {
+                                    background-color: #464A52;
+                                    -webkit-box-shadow: 0 6px 6px -6px #0E1119;
+                                    -moz-box-shadow: 0 6px 6px -6px #0E1119;
+                                    box-shadow: 0 6px 6px -6px #0E1119;
+                                }
+
+                                .container td:hover {
+                                    background-color: #FFF842;
+                                    color: #403E10;
+                                    font-weight: bold;
+
+                                    box-shadow: #7F7C21 -1px 1px, #7F7C21 -2px 2px, #7F7C21 -3px 3px, #7F7C21 -4px 4px, #7F7C21 -5px 5px, #7F7C21 -6px 6px;
+                                    transform: translate3d(6px, -6px, 0);
+
+                                    transition-delay: 0s;
+                                    transition-duration: 0.4s;
+                                    transition-property: all;
+                                    transition-timing-function: line;
+                                }
+
+                                @media (max-width: 800px) {
+
+                                    .container td:nth-child(4),
+                                    .container th:nth-child(4) {
+                                        display: none;
+                                    }
+                                }
+                            </style>
+                        </head>
+
+                        <body>
+                        <h1> Tabla de simbolos </h1>
+                        <br></br>"""
+        texto2 += textoSim
+        texto2 += """        </table>
+                        </body>
+                    </html>""" 
+        archivo.write(texto2)
+        archivo.close()
+
 
     def LimpiarConsola(self):
         self.cuadroConsola.configure(state='normal')
