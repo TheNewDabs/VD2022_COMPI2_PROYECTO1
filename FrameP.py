@@ -1,10 +1,13 @@
 from tkinter import * 
 from tkinter import messagebox
 from tkinter import ttk
+from optimization.Optimizador import Optimizador
 from grammar import grammar
+from grammar.optimizator import optimizator
+from sym.Environment import *
+from sym.Generator import *
 
-
-
+import sys
 
 class Interfaz():
 
@@ -134,8 +137,28 @@ class Interfaz():
         self.Modo = not self.Modo
 
     def Ejecutar(self):
-        messagebox.showinfo(message = 'Funciona', title = 'Información')
-
+        self.Texto = self.cuadroEntrada.get(1.0, END)
+        gen_aux = Generator()
+        gen_aux.clean_all()
+        generator = gen_aux.get_instance()
+        new_env = Environment(None)
+        ast = grammar.parse(self.Texto)
+        try:
+            for inst in ast:
+                inst.compile(new_env)
+            C3D = generator.get_code()
+            generator.clean_all()
+            self.cuadroConsola.configure(state='normal')
+            self.cuadroConsola.delete('1.0','end')
+            self.cuadroConsola.insert(END, C3D)
+            self.cuadroConsola.configure(state='disabled')
+            self.redrawC()
+        except Exception as e:
+            print("no se puede compilar", e)
+            error = {}
+            error['type'] = "no contemplado"
+            error['text'] = "no se puede compilar"
+            Environment.errores.append(error)
         #self.cuadroConsola.configure(state='normal')
         #self.cuadroConsola.insert(END, f"----------------------------\n")
         #self.cuadroConsola.configure(state='disabled')
