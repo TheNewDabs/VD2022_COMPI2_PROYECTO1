@@ -15,15 +15,21 @@ class ReturnSt(Expression):
             return
         gen_aux = Generator()
         generator = gen_aux.get_instance()
-        value = self.expr.compile(env)
-        if (value.type == Type.BOOL):
-            temp_lbl = generator.new_label()
-            generator.put_label(value.true_lbl)
-            generator.set_stack('P', '1')
-            generator.add_goto(temp_lbl)
-            generator.put_label(value.false_lbl)
-            generator.set_stack('P', '0')
-            generator.put_label(temp_lbl)
-        else:
-            generator.set_stack('P', value.value)
+
+        if(self.expr is not None):
+            value = self.expr.compile(env)
+            if (value.type == Type.BOOL):
+                temp_lbl = generator.new_label()
+                generator.put_label(value.true_lbl)
+                generator.set_stack('P', '1')
+                generator.add_goto(temp_lbl)
+                generator.put_label(value.false_lbl)
+                generator.set_stack('P', '0')
+                generator.put_label(temp_lbl)
+                generator.add_goto(value)
+            else:
+                generator.set_stack('P', value.value)
         generator.add_goto(env.return_lbl)
+        generator.put_label(env.return_lbl)
+
+        
