@@ -13,7 +13,7 @@ class If(Instruction):
     def compile(self, env):
         gen_aux = Generator()
         generator = gen_aux.get_instance()
-        generator.add_comment("iniciando el if")
+        generator.add_comment(" INICIO DEL CICLO IF ")
         condition = self.condition.compile(env)
         if condition.type != Type.BOOL:
             print("error, condicion no booleana")
@@ -27,3 +27,5 @@ class If(Instruction):
         if self.else_st is not None:
             self.else_st.compile(env)
             generator.put_label(exit_if)
+
+        generator.add_comment(" FIN DEL CICLO IF ")

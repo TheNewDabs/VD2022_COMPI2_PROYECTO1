@@ -18,6 +18,7 @@ class CallFunc(Expression):
                 param_values = []
                 gen_aux = Generator()
                 generator = gen_aux.get_instance()
+                generator.add_comment(" LLAMADA DE FUNCION ")
                 size = env.size
                 for param in self.params:
                     param_values.append(param.compile(env))
@@ -42,6 +43,7 @@ class CallFunc(Expression):
                     gen_aux = Generator()
                     generator = gen_aux.get_instance()
                     return_temp = generator.add_temp()
+                    generator.add_comment(" LLAMADA DE FUNCION ")
                     generator.add_expression(return_temp, 'H', '', '')
                     aux = generator.add_temp()
                     generator.add_expression(aux, return_temp, '', '')

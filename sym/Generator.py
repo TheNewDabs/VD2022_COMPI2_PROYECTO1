@@ -38,9 +38,9 @@ class Generator:
         Generator.generator = Generator()
 
     def get_header(self):
-        ret = '/*----HEADER----*/\n#include <stdio.h>\n\n'
+        ret = '/*----HEADER----*/\n#include <stdio.h>\n#include <math.h>\n\n'
         if self.module:
-            ret = '/*----HEADER----*/\n#include <stdio.h>\n\n'
+            ret = '/*----HEADER----*/\n#include <stdio.h>\n#include <math.h>\n\n'
         if len(self.temps) > 0:
             ret += 'float '
             for temp in range(len(self.temps)):
@@ -120,7 +120,7 @@ class Generator:
 
     def add_module(self, result, left, right):
         self.module = True
-        self.code_in(f'{result} = math.Mod({left},{right});\n')
+        self.code_in(f'{result} = fmod({left},{right});\n')
 
     def add_trunc(self, result, data):
         self.module = True

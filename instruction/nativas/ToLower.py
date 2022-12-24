@@ -13,6 +13,7 @@ class ToLower(Instruction):
         val = self.value.compile(env)
         gen_aux = Generator()
         generator = gen_aux.get_instance()
+        generator.add_comment(" NATIVA TOLOWER ")
         generator.f_to_lower()
         param_temp = generator.add_temp()
         generator.add_expression(param_temp, 'P', env.size, '+')

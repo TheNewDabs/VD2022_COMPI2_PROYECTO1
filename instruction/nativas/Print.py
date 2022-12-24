@@ -17,6 +17,7 @@ class Print(Instruction):
         gen_aux = Generator()
         generator = gen_aux.get_instance()
 
+        generator.add_comment(" USANDO PRINT ")
         for values in self.value:
             valuee = values.compile(env)
             if valuee.type == Type.INT:

@@ -18,6 +18,7 @@ class For(Instruction):
         generator = gen_aux.get_instance()
         left_val = self.value1.compile(env)
         if self.value2 is not None:
+            generator.add_comment(" INICIO DEL CICLO FOR ")
             right_val = self.value2.compile(env)
             temp1 = generator.add_temp()
             lit_temp1 = Literal(temp1, Type.INT, self.line, self.column)
@@ -39,6 +40,7 @@ class For(Instruction):
             generator.put_label(end_lbl)
         else:
             if left_val.type == Type.STRING:
+                generator.add_comment(" INICIO DEL CICLO FOR ")
                 move_temp = generator.add_temp()
                 puntero = generator.add_temp()
                 continue_lbl = generator.new_label()
@@ -62,6 +64,7 @@ class For(Instruction):
                 generator.add_goto(continue_lbl)
                 generator.put_label(end_lbl)
             elif left_val.type == Type.ARRAY:
+                generator.add_comment(" INICIO DEL CICLO FOR ")
                 tipo = Type.FLOAT
 
                 move_temp = generator.add_temp()
@@ -94,3 +97,5 @@ class For(Instruction):
                 print(left_val)
             else:
                 print("error en la compilacion objeto no interable")
+        
+        generator.add_comment(" FIN DEL CICLO FOR ")

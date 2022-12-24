@@ -1,11 +1,10 @@
 from tkinter import * 
 from tkinter import messagebox
 from tkinter import ttk
-from optimization.Optimizador import Optimizador
 from grammar import grammar
-from grammar.optimizator import optimizator
 from sym.Environment import *
 from sym.Generator import *
+from Optimizador.Optimizador import *
 
 import sys
 
@@ -13,6 +12,8 @@ import sys
 from ReporteTS.ReporteTS import ReporteTS
 MisSimbolosTS = []
 C3D = ''
+Optimizer = Optimizador()
+
 
 class Interfaz():
 
@@ -152,24 +153,20 @@ class Interfaz():
 
     def Mirilla(self):
         print("---------------------------")
-        #instructions = optimizator.parse(self.C3D)
-        #instructions.Bloques()
-        #out = instructions.get_code()
-        #self.cuadroConsola.configure(state='normal')
-        #self.cuadroConsola.delete('1.0','end')
-        #self.cuadroConsola.insert(END, out)
-        #self.cuadroConsola.configure(state='disabled')
+        out = Optimizer.Optimizar(self.C3D, "MIRILLA")
+        self.cuadroConsola.configure(state='normal')
+        self.cuadroConsola.delete('1.0','end')
+        self.cuadroConsola.insert(END, out)
+        self.cuadroConsola.configure(state='disabled')
         pass
 
     def Bloques(self):
         print("---------------------------")
-        #instructions = optimizator.parse(self.C3D)
-        #instructions.Bloques()
-        #out = instructions.get_code()
-        #self.cuadroConsola.configure(state='normal')
-        #self.cuadroConsola.delete('1.0','end')
-        #self.cuadroConsola.insert(END, out)
-        #self.cuadroConsola.configure(state='disabled')
+        out = Optimizer.Optimizar(self.C3D, "BLOQUE")
+        self.cuadroConsola.configure(state='normal')
+        self.cuadroConsola.delete('1.0','end')
+        self.cuadroConsola.insert(END, out)
+        self.cuadroConsola.configure(state='disabled')
         pass
 
     def Ejecutar(self):

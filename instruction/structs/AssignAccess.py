@@ -13,6 +13,7 @@ class AssignAccess(Instruction):
         gen_aux = Generator()
         generator = gen_aux.get_instance()
 
+        generator.add_comment(" ASIGNACION DE STRUCT ")
         val = self.expression.compile(env)
         var = env.get_var(self.id)
         temp = generator.add_temp()

@@ -11,6 +11,7 @@ class Trunc(Instruction):
     def compile(self, env):
         gen_aux = Generator()
         generator = gen_aux.get_instance()
+        generator.add_comment(" NATIVA TRUNC ")
         value = self.value.compile(env)
         temp = generator.add_temp()
         temp_aux = generator.add_temp()

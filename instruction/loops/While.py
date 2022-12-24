@@ -14,6 +14,7 @@ class While(Instruction):
         gen_aux = Generator()
         generator = gen_aux.get_instance()
 
+        generator.add_comment(" INICIO DEL CICLO WHILE ")
         continue_lbl = generator.new_label()
         generator.put_label(continue_lbl)
         condition = self.condition.compile(env)
@@ -24,3 +25,5 @@ class While(Instruction):
         self.instructions.compile(new_env)
         generator.add_goto(continue_lbl)
         generator.put_label(condition.false_lbl)
+        
+        generator.add_comment(" FIN DEL CICLO WHILE ")
