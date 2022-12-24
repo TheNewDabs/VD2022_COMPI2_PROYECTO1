@@ -20,6 +20,7 @@ class Arithmetic(Expression):
         self.left = left
         self.right = right
         self.type = type
+        #self.ListErrores = ListErrores
 
     def compile(self, env):
         gen_aux = Generator()
@@ -155,6 +156,7 @@ class Arithmetic(Expression):
                     error = {}
                     error['type'] = "aritmetico"
                     error['text'] = "no se puede operar"
+                    #self.ListErrores.append(Errores("La funcion esperaba retorno " + Valor[1], 'Semantico'))
                     Environment.errores.append(error)
                     print("no se puede operar")
 

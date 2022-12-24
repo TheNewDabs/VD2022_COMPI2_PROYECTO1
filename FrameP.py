@@ -10,10 +10,11 @@ import sys
 
 
 from ReporteTS.ReporteTS import ReporteTS
+from ReporteTS.Errores import Errores
 MisSimbolosTS = []
 C3D = ''
 Optimizer = Optimizador()
-
+ListErrores = []
 
 class Interfaz():
 
@@ -170,12 +171,14 @@ class Interfaz():
         pass
 
     def Ejecutar(self):
+        self.Errores = []
         self.Texto = self.cuadroEntrada.get(1.0, END)
         gen_aux = Generator()
         gen_aux.clean_all()
         generator = gen_aux.get_instance()
         new_env = Environment(None)
-        ast = grammar.parse(self.Texto)
+        [ast, ListErrores] = grammar.parse(self.Texto)
+        self.Errores = ListErrores.copy()
         try:
             for inst in ast:
                 inst.compile(new_env)
@@ -200,6 +203,8 @@ class Interfaz():
             error['text'] = "no se puede compilar"
             Environment.errores.append(error)
         """"""
+        self.TextoErrores(ListErrores)
+        grammar.ListErrores = []
 
     def genera_tabla_simbolos(self):
         textoSim = """<table class="container"><tbody>"""

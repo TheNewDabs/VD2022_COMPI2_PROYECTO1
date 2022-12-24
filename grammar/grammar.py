@@ -46,6 +46,10 @@ from instruction.nativas.Casteo import Casteo
 from ReporteTS.ReporteTS import ReporteTS
 reporteTS = []
 
+from ReporteTS.Errores import Errores
+global ListErrores
+ListErrores = []
+
 
 
 reservadas = {
@@ -223,6 +227,7 @@ def t_error(t):
     error_lexico = {}
     error_lexico["type"] = "lexico"
     error_lexico["value"] = "Caracter no reconocido " + t.value[0] + "\n"
+    ListErrores.append(Errores(str(t.value[0]) + ' en ' + str(t.lineno), 'Lexico'))
     Environment.errores.append(error_lexico)
     print("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
@@ -737,6 +742,7 @@ def p_error(t):
     error_sintactico = {}
     error_sintactico["type"] = "sintactico"
     error_sintactico["value"] = "Error sintactico en " + t.value+"\n"
+    ListErrores.append(Errores(str(t.value) + ' en linea ' + str(t.lineno), 'Sintactico'))
     Environment.errores.append(error_sintactico)
     Print.printlist += "Error sintactico en " + t.value+"\n"
 
@@ -749,4 +755,4 @@ def getreporteTS():
 def parse(input):
     global reporteTS
     reporteTS = []
-    return parser.parse(input, lexer=lexer)
+    return [parser.parse(input, lexer=lexer), ListErrores]
