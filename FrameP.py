@@ -12,6 +12,7 @@ import sys
 
 from ReporteTS.ReporteTS import ReporteTS
 MisSimbolosTS = []
+C3D = ''
 
 class Interfaz():
 
@@ -25,6 +26,15 @@ class Interfaz():
         self.TextoErrores([])
         self.menubar.add_command(label="Modo Claro", command=self.CambiarModo)
         self.menubar.add_command(label="Ejecutar", command=self.Ejecutar)
+
+        self.menuOptimizar = Menu(self.menubar)
+        self.menuOptimizar.add_command(label="Mirilla", command=self.Mirilla)
+        self.menuOptimizar.add_command(label="Bloques", command=self.Bloques)
+        self.menubar.add_cascade(label="Optimizar", menu=self.menuOptimizar)
+
+        #self.menubar.add_command(label="Optimizar", command=self.Optimizando)
+
+
         self.menuReportes = Menu(self.menubar)
         self.menuReportes.add_command(label="Tabla de símbolos", command=self.genera_tabla_simbolos)
         self.menuReportes.add_command(label="Tabla de errores", command=self.GenerarReporteErrores)
@@ -140,6 +150,28 @@ class Interfaz():
             #self.scrollBarVerticalE.configure(bg='white', fg='black', activebackground='white')
         self.Modo = not self.Modo
 
+    def Mirilla(self):
+        print("---------------------------")
+        #instructions = optimizator.parse(self.C3D)
+        #instructions.Bloques()
+        #out = instructions.get_code()
+        #self.cuadroConsola.configure(state='normal')
+        #self.cuadroConsola.delete('1.0','end')
+        #self.cuadroConsola.insert(END, out)
+        #self.cuadroConsola.configure(state='disabled')
+        pass
+
+    def Bloques(self):
+        print("---------------------------")
+        #instructions = optimizator.parse(self.C3D)
+        #instructions.Bloques()
+        #out = instructions.get_code()
+        #self.cuadroConsola.configure(state='normal')
+        #self.cuadroConsola.delete('1.0','end')
+        #self.cuadroConsola.insert(END, out)
+        #self.cuadroConsola.configure(state='disabled')
+        pass
+
     def Ejecutar(self):
         self.Texto = self.cuadroEntrada.get(1.0, END)
         gen_aux = Generator()
@@ -150,11 +182,11 @@ class Interfaz():
         try:
             for inst in ast:
                 inst.compile(new_env)
-            C3D = generator.get_code()
+            self.C3D = generator.get_code()
             generator.clean_all()
             self.cuadroConsola.configure(state='normal')
             self.cuadroConsola.delete('1.0','end')
-            self.cuadroConsola.insert(END, C3D)
+            self.cuadroConsola.insert(END, self.C3D)
             self.cuadroConsola.configure(state='disabled')
             
             
@@ -170,44 +202,7 @@ class Interfaz():
             error['type'] = "no contemplado"
             error['text'] = "no se puede compilar"
             Environment.errores.append(error)
-        #self.cuadroConsola.configure(state='normal')
-        #self.cuadroConsola.insert(END, f"----------------------------\n")
-        #self.cuadroConsola.configure(state='disabled')
-        #self.Texto = self.cuadroEntrada.get(1.0, END)
-        #self.cuadroConsola.delete('1.0','end')
-        #[resultado, ListErrores] = Gramatica.parse(self.Texto)
-        #Principal = TablaSimbolos('<General>',None,ListErrores)
-        #Principal.Return.Tipo = '()'
-        #Principal.Consola = self.cuadroConsola
-        #if resultado != None:
-        #    for i in resultado:
-        #        if i.Tipo == "Funcion":
-        #            if Principal.BuscarSimbolos(i.Nombre) == None:
-        #                Principal.Insertar(Simbolo(i.Nombre, i, "Funcion", False, ListErrores))
-        #            else:
-        #                ListErrores.append(Errores('Ya existe ' + i.Nombre, 'Semantico'))
-        #        elif i.Tipo == "Estructura":
-        #            """"""
-        #        elif i.Tipo == "Modulo":
-        #            """"""
-        #if not Principal.EjecutarMain():
-        #    messagebox.showinfo(message="No se detecto metodo main", title="Sin main")
-        #if len(ListErrores) != 0:
-        #    messagebox.showinfo(message="se han encontrado error en la ejecucion", title="Errores")
-        #    self.cuadroConsola.configure(state='normal')
-        #    for x in ListErrores:
-        #        self.cuadroConsola.insert(END, f"{x.PrintError()}")
-        #    self.cuadroConsola.configure(state='disabled')
-        #self.cuadroConsola.configure(state='normal')
-        #self.cuadroConsola.insert(END, f"\n----------------------------\n")
-        #self.cuadroConsola.configure(state='disabled')
-        #self.redrawC()
-        #self.TextoErrores(ListErrores)
-        #self.TextoSimbolos(Principal)
-        #Gramatica.ListErrores = []
         """"""
-
-
 
     def genera_tabla_simbolos(self):
         textoSim = """<table class="container"><tbody>"""
@@ -219,7 +214,6 @@ class Interfaz():
         textoSim += """</tbody></table>"""
 
         archivo = open("Tabla_Simbolos.html", "w")
-        #texto = "\"mis perritos estan durmiendo\""
         
 
         texto2 = """<!DOCTYPE html>
@@ -535,11 +529,6 @@ class Interfaz():
     def GenerarReporteErrores(self):
         Archivo = open("Reporte_Errores.html", 'w')
         Archivo.write(self.ReporteErrores)
-        Archivo.close()
-
-    def GenerarReporteSimbolos(self):
-        Archivo = open("Reporte_Simbolos.html", 'w')
-        Archivo.write(self.ReporteSimbolos)
         Archivo.close()
 
     def onScrollPressE(self, *args):
