@@ -75,7 +75,7 @@ reservadas = {
     "for": "FOR",
     "if": "IF",
     "in": "IN",
-    "elseif": "ELSEIF",
+    "elif": "ELSEIF",
     "else": "ELSE",
 
     
